@@ -8,65 +8,96 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,Roboto,Arial,sans-serif;background:linear-gradient(to bottom,#1a1a1a,#000);color:#d4af37;min-height:100vh}
-.app{padding:14px;padding-bottom:40px}
-.wrap{max-width:480px;margin:0 auto}
-.hdr{text-align:center;margin-bottom:14px}
-.hdr h1{font-size:19px;font-weight:900}
-.hdr p{font-size:10px;opacity:.6;letter-spacing:2px;margin-top:3px}
-.card{background:rgba(0,0,0,.6);border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:13px;margin-bottom:12px}
-.ctitle{font-weight:900;font-size:13px;margin-bottom:9px}
+html,body{height:100%;overflow:hidden}
+body{font-family:-apple-system,Roboto,Arial,sans-serif;background:#000;color:#e8c766}
+#root{height:100%}
+.shell{position:relative;display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:480px;margin:0 auto;background:radial-gradient(ellipse at top,#1f1a0d 0%,#0a0805 45%,#000 100%);overflow:hidden}
+.header{flex-shrink:0;padding:10px 12px 8px;border-bottom:1px solid rgba(212,175,55,.25);background:linear-gradient(to bottom,rgba(212,175,55,.06),transparent)}
+.header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.menu-btn{width:34px;height:34px;border-radius:9px;background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.35);display:flex;align-items:center;justify-content:center;color:#e8c766;font-size:16px;cursor:pointer;flex-shrink:0}
+.brand-center{text-align:center;flex:1}
+.brand-name{font-size:13px;font-weight:900;letter-spacing:.5px;background:linear-gradient(135deg,#f4e4a1,#d4af37 50%,#a8842e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-sub{font-size:8px;opacity:.55;letter-spacing:2px;margin-top:1px}
+.lastnum{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.2);border-radius:20px;padding:3px 9px 3px 3px;flex-shrink:0}
+.lastnum .dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:10px;box-shadow:0 0 8px rgba(0,0,0,.5)}
+.lastnum span{font-size:9px;color:#9ca3af}
+.dec{position:relative;border-radius:14px;padding:1px;overflow:hidden}
+.dec-bg-gold{background:linear-gradient(135deg,#f4e4a1,#d4af37,#8a6d1f)}
+.dec-bg-green{background:linear-gradient(135deg,#86efac,#22c55e,#15803d)}
+.dec-bg-red{background:linear-gradient(135deg,#fca5a5,#ef4444,#991b1b)}
+.dec-inner{background:linear-gradient(160deg,#15120a,#0a0805);border-radius:13px;padding:11px}
+.dec-hd{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:7px}
+.dec-title{font-weight:900;font-size:12px;letter-spacing:.3px}
+.badge{border-radius:7px;padding:3px 8px;font-size:10px;font-weight:900;flex-shrink:0;box-shadow:0 0 10px rgba(74,222,128,.4)}
+.empty-dec{text-align:center;padding:16px 10px;color:#71757e;font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip-col{display:flex;flex-direction:column;align-items:center;gap:1px}
+.chip{width:33px;height:33px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.chip-gold{box-shadow:0 0 0 2px #e8c766,0 2px 8px rgba(0,0,0,.5)}
+.chip-lbl{font-size:8px;color:#8a8f99}
+.mod1-bar{font-size:10px;color:#9ca3af;border-top:1px solid rgba(255,255,255,.08);padding-top:7px;margin-top:9px}
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:40;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.open{opacity:1;pointer-events:auto}
+.drawer{position:absolute;top:0;left:0;bottom:0;width:78%;max-width:300px;background:linear-gradient(160deg,#19140a,#0a0805);border-right:1px solid rgba(212,175,55,.3);z-index:50;transform:translateX(-105%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:8px 0 30px rgba(0,0,0,.6)}
+.drawer.open{transform:translateX(0)}
+.drawer-hd{padding:18px 16px 14px;border-bottom:1px solid rgba(212,175,55,.2)}
+.drawer-title{font-size:16px;font-weight:900;background:linear-gradient(135deg,#f4e4a1,#d4af37);-webkit-background-clip:text;background-clip:text;color:transparent}
+.drawer-sub{font-size:9px;opacity:.5;letter-spacing:1.5px;margin-top:2px}
+.drawer-body{flex:1;overflow-y:auto;padding:10px}
+.drawer-item{display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:10px;background:none;border:none;width:100%;text-align:left;color:#d1d5db;cursor:pointer;margin-bottom:4px}
+.drawer-item.active{background:rgba(212,175,55,.12);color:#e8c766}
+.drawer-item-icon{font-size:18px;width:22px;text-align:center}
+.drawer-item-label{font-size:14px;font-weight:700}
+.drawer-foot{padding:12px 16px;border-top:1px solid rgba(212,175,55,.2);font-size:9px;color:#6b7280;text-align:center}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px}
+.card{background:linear-gradient(160deg,rgba(255,255,255,.035),rgba(0,0,0,.2));border:1px solid rgba(212,175,55,.22);border-radius:13px;padding:12px;margin-bottom:12px}
+.ctitle{font-weight:900;font-size:12px;margin-bottom:9px;display:flex;align-items:center;gap:6px;color:#e8c766}
 .muted{color:#9ca3af;font-size:12px}
 .tiny{font-size:10px}
-.row{display:flex;align-items:center;gap:10px}
-.rowsb{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:9px}
-.dec{border-radius:14px;padding:13px;margin-bottom:12px;border:2px solid}
-.dec-inner{border-radius:8px;padding:10px;margin-bottom:10px}
-.dec-title{font-weight:900;font-size:13px}
-.dec-desc{font-size:11px;color:#9ca3af;margin-top:3px}
-.badge{border-radius:6px;padding:2px 8px;font-size:11px;font-weight:900}
-.chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip-col{display:flex;flex-direction:column;align-items:center;gap:2px}
-.chip{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:13px}
-.chip-lbl{font-size:9px;color:#9ca3af}
-.chip-next{border:2px dashed #d4af37;color:#d4af37;background:transparent}
-.mod1-bar{font-size:11px;color:#9ca3af;border-top:1px solid rgba(255,255,255,.08);padding-top:7px;margin-top:4px}
-.run-circle{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex-shrink:0}
-.run-label{font-weight:900;font-size:14px}
-.pred-box{background:rgba(212,175,55,.08);border-left:4px solid #d4af37;border-radius:0 8px 8px 0;padding:9px;margin-top:9px}
-.pred-hdr{font-size:11px;font-weight:900;margin-bottom:7px}
-.pred-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:4px}
-.ph{color:#4ade80;font-weight:900}
-.pm{color:#facc15;font-weight:900}
-.pl{color:#9ca3af;font-weight:900}
-.info-box{background:rgba(255,255,255,.04);border-radius:8px;padding:9px;margin-top:8px;font-size:12px;color:#9ca3af}
-.l15chips{display:flex;flex-wrap:wrap;gap:7px}
-.ctrls{display:flex;gap:7px}
-.btn{border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:900;cursor:pointer}
-.btn-undo{background:#374151;color:#d4af37}
+.zero-btn{width:100%;height:42px;border:none;border-radius:10px;background:linear-gradient(160deg,#22c55e,#15803d);color:#fff;font-weight:900;font-size:16px;margin-bottom:8px;cursor:pointer;box-shadow:0 3px 10px rgba(21,128,61,.3)}
+.g36{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.nbtn{height:44px;border:none;border-radius:10px;color:#fff;font-weight:700;font-size:15px;cursor:pointer;transition:transform .1s;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.nbtn:active{transform:scale(.92)}
+.run-strip{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(212,175,55,.15);border-radius:11px;padding:10px;margin-bottom:10px}
+.run-circle{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0}
+.run-label{font-weight:900;font-size:13px}
+.ctrls-row{display:flex;gap:8px;margin-bottom:10px}
+.btn{border:none;border-radius:10px;padding:10px;font-size:12px;font-weight:900;cursor:pointer;flex:1}
+.btn-undo{background:#2a2a2a;color:#e8c766;border:1px solid rgba(212,175,55,.2)}
 .btn-undo:disabled{opacity:.3}
-.btn-reset{background:rgba(127,29,29,.5);color:#fca5a5}
-.zero-btn{width:100%;height:40px;border:none;border-radius:8px;background:#16a34a;color:#fff;font-weight:900;font-size:14px;margin-bottom:7px;cursor:pointer}
-.g36{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
-.nbtn{height:40px;border:none;border-radius:8px;color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:transform .1s}
-.nbtn:active{transform:scale(.93)}
-.litem{background:rgba(255,255,255,.04);border-radius:8px;padding:9px;margin-bottom:7px}
+.btn-reset{background:rgba(127,29,29,.4);color:#fca5a5;border:1px solid rgba(239,68,68,.25)}
+.dna-row{background:rgba(255,255,255,.04);border-radius:9px;padding:8px 10px;margin-bottom:6px;border:1px solid rgba(212,175,55,.1)}
+.dna-rhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-size:12px}
+.num-tags{display:flex;flex-wrap:wrap;gap:4px}
+.ntag{border-radius:5px;padding:2px 7px;font-size:11px;font-weight:900;color:#fff}
+.ph{color:#4ade80;font-weight:900}.pm{color:#facc15;font-weight:900}.pl{color:#9ca3af;font-weight:900}
+.litem{background:rgba(255,255,255,.04);border-radius:9px;padding:9px;margin-bottom:7px;border:1px solid rgba(212,175,55,.1)}
 .lhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-size:12px}
 .ltags{display:flex;flex-wrap:wrap;gap:5px}
 .tag{background:rgba(0,0,0,.4);border-radius:6px;padding:3px 7px;font-size:11px}
-.tpct{color:#d4af37;font-weight:900}
-.hint{background:rgba(212,175,55,.07);border-radius:8px;padding:9px;font-size:12px;color:#d4af37;margin-bottom:9px;line-height:1.5}
-.itarea{width:100%;min-height:60px;background:#111;border:1px solid #444;border-radius:8px;color:#fff;padding:9px;font-size:13px;font-family:monospace;resize:vertical;margin-bottom:7px}
-.ibtn{width:100%;background:#d4af37;color:#000;border:none;border-radius:8px;padding:11px;font-weight:900;font-size:14px;cursor:pointer;margin-bottom:5px}
-.imsg{font-size:12px;color:#4ade80}
+.tpct{color:#e8c766;font-weight:900}
 .toggle-row{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
 .map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:210px;margin:10px auto 0}
 .mcell{height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px}
-.footer-card{border:1px dashed #374151;border-radius:12px;padding:13px;text-align:center}
-.dna-row{background:rgba(255,255,255,.04);border-radius:8px;padding:8px 10px;margin-bottom:5px}
-.dna-rhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-size:12px}
-.num-tags{display:flex;flex-wrap:wrap;gap:4px}
-.ntag{border-radius:4px;padding:2px 7px;font-size:11px;font-weight:900;color:#fff}
+.l15chips{display:flex;flex-wrap:wrap;gap:7px}
+.hint{background:rgba(212,175,55,.07);border-radius:9px;padding:9px;font-size:12px;color:#e8c766;margin-bottom:9px;line-height:1.5;border:1px solid rgba(212,175,55,.15)}
+.itarea{width:100%;min-height:60px;background:#111;border:1px solid #444;border-radius:9px;color:#fff;padding:9px;font-size:13px;font-family:monospace;resize:vertical;margin-bottom:7px}
+.ibtn{width:100%;background:linear-gradient(160deg,#f4e4a1,#d4af37);color:#000;border:none;border-radius:9px;padding:11px;font-weight:900;font-size:14px;cursor:pointer;margin-bottom:5px}
+.imsg{font-size:12px;color:#4ade80}
+.cas-bar{display:flex;gap:6px;padding:8px;background:#0a0805;border-bottom:1px solid rgba(212,175,55,.2)}
+.cas-input{flex:1;background:#111;border:1px solid #444;border-radius:9px;color:#fff;padding:8px 10px;font-size:13px}
+.cas-go{background:linear-gradient(160deg,#f4e4a1,#d4af37);color:#000;border:none;border-radius:9px;padding:8px 14px;font-weight:900;font-size:13px;cursor:pointer}
+.cas-frame-wrap{flex:1;position:relative;background:#000}
+.cas-frame{width:100%;height:100%;border:none}
+.cas-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px;text-align:center;color:#6b7280;gap:10px}
+.cas-presets{display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:#0a0805}
+.cas-preset-btn{background:#1a1610;color:#e8c766;border:1px solid rgba(212,175,55,.3);border-radius:7px;padding:5px 10px;font-size:11px;cursor:pointer}
+.cas-warn{font-size:10px;color:#6b7280;padding:6px 10px;background:#0a0805;text-align:center}
+.tabbar{flex-shrink:0;display:flex;border-top:1px solid rgba(212,175,55,.25);background:#0a0805;padding-bottom:env(safe-area-inset-bottom)}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px;background:none;border:none;color:#6b7280;cursor:pointer}
+.tab.active{color:#e8c766}
+.tab-icon{font-size:18px}
+.tab-label{font-size:10px;font-weight:700}
 </style>
 </head>
 <body>
@@ -126,14 +157,12 @@ function getCurrentRun(hist){
 function getDecision(hist,learned){
   if(!hist.length) return null;
   var last=hist[0].num;
-  if(isScattered(hist)) return {mode:"hold",reason:"Mesa sem padrão definido — bola caindo em todos os setores. Aguarde próximas rodadas."};
+  if(isScattered(hist)) return {mode:"hold",reason:"Mesa sem padrão definido — bola em todos os setores. Aguarde."};
   var dnaMap={};
-  getDNA(last).forEach(function(s){
-    s.nums.forEach(function(n){dnaMap[n]=(dnaMap[n]||0)+s.relevance;});
-  });
+  getDNA(last).forEach(function(s){ s.nums.forEach(function(n){dnaMap[n]=(dnaMap[n]||0)+s.relevance;}); });
   var dnaKeys=Object.keys(dnaMap);
   var maxRel=dnaKeys.length?Math.max.apply(null,dnaKeys.map(function(k){return dnaMap[k];})):0;
-  if(dnaKeys.length>10&&maxRel<=2) return {mode:"hold",reason:"DNA Master com muitos alvos simultâneos e baixa definição. Aguarde próximas rodadas."};
+  if(dnaKeys.length>10&&maxRel<=2) return {mode:"hold",reason:"DNA com muitos alvos e baixa definição. Aguarde."};
   var run=getCurrentRun(hist);
   var mod1Token=null,mod1Conf=0,mod1Total=0,mod1Pct=0;
   if(run){
@@ -147,20 +176,18 @@ function getDecision(hist,learned){
   var confluent=[],dnaOnly=[];
   Object.entries(dnaMap).forEach(function(arr){
     var n=parseInt(arr[0]),rel=arr[1],tok=classify(n).token;
-    if(mod1Token&&tok===mod1Token) confluent.push({n:n,rel:rel});
-    else dnaOnly.push({n:n,rel:rel});
+    if(mod1Token&&tok===mod1Token) confluent.push({n:n,rel:rel}); else dnaOnly.push({n:n,rel:rel});
   });
   confluent.sort(function(a,b){return b.rel-a.rel;});
-  dnaOnly.sort(function(a,b){return b.rel-a.rel;});
   var finalNums,mode,confidence=0;
   if(confluent.length>0&&mod1Pct>=50){
     mode="confluence";confidence=mod1Pct;
     finalNums=confluent.slice(0,15).map(function(x){return x.n;});
   } else if(confluent.length>0&&mod1Pct>0&&mod1Pct<50){
-    return {mode:"hold",reason:"Confluência detectada mas confiança de "+mod1Pct+"% está abaixo de 50%. Aguarde mais rodadas."};
+    return {mode:"hold",reason:"Confluência com confiança de "+mod1Pct+"% (abaixo de 50%). Aguarde."};
   } else {
     var focused=Object.entries(dnaMap).map(function(a){return {n:parseInt(a[0]),rel:a[1]};}).filter(function(x){return x.rel>=3;}).sort(function(a,b){return b.rel-a.rel;});
-    if(!focused.length) return {mode:"hold",reason:"Sem confluência e DNA sem foco suficiente. Aguarde próximas rodadas."};
+    if(!focused.length) return {mode:"hold",reason:"Sem confluência e DNA sem foco. Aguarde."};
     mode="dna";confidence=0;
     finalNums=focused.slice(0,15).map(function(x){return x.n;});
   }
@@ -191,6 +218,22 @@ function App(){
   var ts=useState(false);var showTable=ts[0];var setShowTable=ts[1];
   var its=useState("");var importText=its[0];var setImportText=its[1];
   var ims=useState("");var importMsg=ims[0];var setImportMsg=ims[1];
+  var tabS=useState("jogar");var tab=tabS[0];var setTab=tabS[1];
+  var csU=useState("");var casinoUrl=csU[0];var setCasinoUrl=csU[1];
+  var csI=useState("");var casinoInput=csI[0];var setCasinoInput=csI[1];
+  var drS=useState(false);var drawerOpen=drS[0];var setDrawerOpen=drS[1];
+  function normalizeUrl(u){
+    u=u.trim();
+    if(!u) return "";
+    if(!/^https?:\/\//i.test(u)) u="https://"+u;
+    return u;
+  }
+  function loadCasino(u){
+    var norm=normalizeUrl(u||casinoInput);
+    if(!norm) return;
+    setCasinoUrl(norm);
+    setCasinoInput(norm);
+  }
   function addNumber(n){
     var r=computeAdd(history,learned,n);
     setHistory(function(){return r.history;});
@@ -224,6 +267,7 @@ function App(){
     chron.forEach(function(n){var r=computeAdd(hh,ll,n);hh=r.history;ll=r.learned;acts.unshift(r.action);});
     setHistory(hh);setLearned(ll);setActionLog(acts.slice(0,50));
     setImportText("");setImportMsg("✅ "+chron.length+" números importados!");
+    setTab("jogar");
   }
   var run=getCurrentRun(history);
   var decision=getDecision(history,learned);
@@ -232,125 +276,141 @@ function App(){
   function Chip(n,opts){
     opts=opts||{};
     var info=classify(n);
-    var ring=info.ring?"0 0 0 2px #d4af37":"none";
+    var cls="chip"+(info.ring?" chip-gold":"");
     return h("div",{key:"c"+n+(opts.k||""),className:"chip-col"},
-      h("div",{className:"chip",style:{background:numBg(n),boxShadow:ring}},n),
+      h("div",{className:cls,style:{background:numBg(n)}},n),
       h("span",{className:"chip-lbl"},TS[info.token])
     );
   }
-  var decCard=null;
-  if(decision){
-    if(decision.mode==="hold"){
-      decCard=h("div",{className:"dec",style:{borderColor:"#ef4444",background:"rgba(0,0,0,.7)"}},
-        h("div",{className:"dec-inner",style:{background:"rgba(239,68,68,.1)"}},
-          h("p",{className:"dec-title",style:{color:"#ef4444"}},"🛑 SEGURAR — NÃO APOSTE"),
-          h("p",{className:"dec-desc",style:{color:"#fca5a5"}},decision.reason)
-        )
-      );
-    } else {
-      var isConf=decision.mode==="confluence";
-      var bc=isConf?"#4ade80":"#d4af37";
-      decCard=h("div",{className:"dec",style:{borderColor:bc,background:"rgba(0,0,0,.7)"}},
-        h("div",{className:"dec-inner",style:{background:isConf?"rgba(74,222,128,.1)":"rgba(212,175,55,.08)"}},
-          h("div",{className:"rowsb",style:{marginBottom:0}},
-            h("p",{className:"dec-title",style:{color:bc}},isConf?"✅ CONFLUÊNCIA — DNA + Padrão":"📡 DNA MASTER — Foco detectado"),
-            isConf&&decision.confidence>0?h("span",{className:"badge",style:{background:"#4ade80",color:"#000"}},decision.confidence+"% confiança"):null
-          ),
-          h("p",{className:"dec-desc"},isConf?"DNA Master e padrão de sequência convergem!":"DNA com foco. Módulo 1 acumulando dados.")
-        ),
-        h("p",{style:{fontWeight:"900",fontSize:"12px",marginBottom:"8px",color:"#d4af37"}},"🎯 SUGESTÃO — "+decision.numbers.length+" fichas (máx 15):"),
-        h("div",{className:"chips"},decision.numbers.map(function(n,i){return Chip(n,{k:"d"+i});})),
-        decision.mod1Token?h("p",{className:"mod1-bar"},"📊 Módulo 1: "+TI[decision.mod1Token]+" "+TL[decision.mod1Token]+(decision.mod1Pct?" ("+decision.mod1Pct+"% — "+decision.mod1Total+" ocorr.)":"")):
-          h("p",{className:"mod1-bar"},"📊 Módulo 1: acumulando dados...")
-      );
-    }
+  var lastChip=null;
+  if(history.length>0){
+    var ln=history[0].num;
+    lastChip=h("div",{className:"lastnum"},
+      h("div",{className:"dot",style:{background:numBg(ln)}},ln),
+      h("span",null,"último")
+    );
   }
+  var decCard;
+  if(!decision){
+    decCard=h("div",{className:"empty-dec"},"👆 Toque em um número na aba \"Jogar\" para iniciar a análise");
+  } else if(decision.mode==="hold"){
+    decCard=h("div",{className:"dec dec-bg-red"},
+      h("div",{className:"dec-inner"},
+        h("p",{className:"dec-title",style:{color:"#f87171",marginBottom:"4px"}},"🛑 SEGURAR — NÃO APOSTE"),
+        h("p",{className:"tiny",style:{color:"#fca5a5",lineHeight:"1.5"}},decision.reason)
+      )
+    );
+  } else {
+    var isConf=decision.mode==="confluence";
+    decCard=h("div",{className:"dec "+(isConf?"dec-bg-green":"dec-bg-gold")},
+      h("div",{className:"dec-inner"},
+        h("div",{className:"dec-hd"},
+          h("p",{className:"dec-title",style:{color:isConf?"#4ade80":"#e8c766"}},isConf?"✅ CONFLUÊNCIA":"📡 DNA MASTER"),
+          isConf&&decision.confidence>0?h("span",{className:"badge",style:{background:"#4ade80",color:"#000"}},decision.confidence+"%"):null
+        ),
+        h("div",{className:"chips"},decision.numbers.map(function(n,i){return Chip(n,{k:"d"+i});})),
+        decision.mod1Token?h("p",{className:"mod1-bar"},"📊 "+TI[decision.mod1Token]+" "+TL[decision.mod1Token]+(decision.mod1Pct?" ("+decision.mod1Pct+"%)":"")):null
+      )
+    );
+  }
+  var headerEl=h("div",{className:"header"},
+    h("div",{className:"header-row"},
+      h("button",{className:"menu-btn",onClick:function(){setDrawerOpen(true);}},"☰"),
+      h("div",{className:"brand-center"},
+        h("div",{className:"brand-name"},"ROULETTE ANALYZER"),
+        h("div",{className:"brand-sub"},"R.V33.59")
+      ),
+      lastChip||h("div",{style:{width:"34px"}})
+    ),
+    decCard
+  );
+  var menuItems=[
+    {id:"jogar",icon:"🎲",label:"Jogar"},
+    {id:"analise",icon:"📊",label:"Análise"},
+    {id:"cassino",icon:"🎰",label:"Cassino"},
+    {id:"historico",icon:"📜",label:"Histórico"}
+  ];
+  var drawerEl=h("div",{className:"drawer"+(drawerOpen?" open":"")},
+    h("div",{className:"drawer-hd"},
+      h("div",{className:"drawer-title"},"🎰 MENU IMPERIAL"),
+      h("div",{className:"drawer-sub"},"ROULETTE ANALYZER · R.V33.59")
+    ),
+    h("div",{className:"drawer-body"},
+      menuItems.map(function(it){
+        return h("button",{key:it.id,className:"drawer-item"+(tab===it.id?" active":""),
+          onClick:function(){setTab(it.id);setDrawerOpen(false);}},
+          h("span",{className:"drawer-item-icon"},it.icon),
+          h("span",{className:"drawer-item-label"},it.label)
+        );
+      })
+    ),
+    h("div",{className:"drawer-foot"},"Módulo 1 + DNA Master ativos")
+  );
+  var overlayEl=h("div",{className:"overlay"+(drawerOpen?" open":""),onClick:function(){setDrawerOpen(false);}});
   var predBox=null;
   if(run){
     var k2=run.token+"|"+capLen(run.length);
     var ent2=learned[k2];
     if(ent2&&ent2.total>0){
       var s2=Object.entries(ent2.next).sort(function(a,b){return b[1]-a[1];});
-      predBox=h("div",{className:"pred-box"},
-        h("div",{className:"pred-hdr"},"🧠 ANTECIPAÇÃO ("+ent2.total+" ocorrência"+(ent2.total>1?"s":"")+")"),
-        s2.slice(0,3).map(function(arr){
+      predBox=h("div",{className:"tiny muted",style:{marginTop:"6px"}},
+        "🧠 "+s2.slice(0,2).map(function(arr){
           var pct=Math.round(arr[1]/ent2.total*100);
-          var cls=pct>=60?"ph":pct>=40?"pm":"pl";
-          return h("div",{className:"pred-row",key:arr[0]},
-            h("span",null,TI[arr[0]]+" "+TL[arr[0]]),
-            h("span",{className:cls},pct+"%")
-          );
-        }),
-        h("p",{className:"tiny muted",style:{marginTop:"6px"}},"Quando \""+TL[run.token]+" x"+capLen(run.length)+(capLen(run.length)===4?"+":"")+"\" apareceu antes, foi assim que quebrou.")
+          return TI[arr[0]]+" "+pct+"%";
+        }).join(" · ")
       );
-    } else {
-      predBox=h("div",{className:"info-box"},"ℹ️ Ainda sem dados suficientes para este padrão. Continue adicionando números.");
     }
   }
-  var runCard=h("div",{className:"card"},
-    h("div",{className:"ctitle"},"🎯 SEQUÊNCIA ATUAL"),
-    !run?h("p",{className:"muted"},"Toque em um número abaixo para começar."):
-    h("div",null,
-      h("div",{className:"row",style:{marginBottom:"4px"}},
-        h("div",{className:"run-circle",style:{background:TB[run.token],boxShadow:run.token==="IR"||run.token==="IB"?"0 0 0 3px #d4af37":"none"}},TI[run.token]),
-        h("div",null,h("p",{className:"run-label"},TL[run.token]),h("p",{className:"tiny muted"},"repetiu "+run.length+"x seguidas"))
-      ),
-      predBox
-    )
+  var numBtns=[];
+  for(var n=1;n<=36;n++){
+    var info2=classify(n);
+    numBtns.push(h("button",{key:"n"+n,className:"nbtn",
+      style:{background:info2.color==="red"?"#dc2626":"#27272a",boxShadow:info2.ring?"inset 0 0 0 2px #e8c766":"0 2px 6px rgba(0,0,0,.35)"},
+      onClick:(function(nn){return function(){addNumber(nn);};})(n)},n));
+  }
+  var jogarTab=h("div",null,
+    run?h("div",{className:"run-strip"},
+      h("div",{className:"run-circle",style:{background:TB[run.token]}},TI[run.token]),
+      h("div",null,
+        h("p",{className:"run-label"},TL[run.token]+" ×"+run.length),
+        predBox
+      )
+    ):null,
+    h("div",{className:"ctrls-row"},
+      h("button",{className:"btn btn-undo",onClick:undo,disabled:!history.length},"↩ Desfazer"),
+      h("button",{className:"btn btn-reset",onClick:resetAll},"🗑 Nova Mesa")
+    ),
+    h("button",{className:"zero-btn",onClick:function(){addNumber(0);}},"0"),
+    h("div",{className:"g36"},numBtns),
+    h("p",{className:"tiny muted",style:{marginTop:"8px",textAlign:"center"}},"◻ Borda dourada = irmão de cor")
   );
-  var dnaCard=null;
+  var dnaSection=null;
   if(history.length>0){
     var last=history[0].num;
     var suggestions=getDNA(last);
     var totalR=suggestions.reduce(function(a,s){return a+s.relevance;},0);
-    dnaCard=h("div",{className:"card"},
+    dnaSection=h("div",{className:"card"},
       h("div",{className:"ctitle"},"🧬 DNA MASTER — PÓS "+last),
       suggestions.slice(0,5).map(function(s,i){
         var pct=totalR>0?Math.round(s.relevance/totalR*100):0;
         var cls=s.relevance>=7?"ph":s.relevance>=4?"pm":"pl";
         return h("div",{className:"dna-row",key:i},
           h("div",{className:"dna-rhead"},
-            h("span",{style:{fontWeight:"900"}},"Alvo: "+s.target+(s.spread>0?" ±"+s.spread+" viz.":" (exato)")),
+            h("span",{style:{fontWeight:"900"}},"Alvo: "+s.target+(s.spread>0?" ±"+s.spread:" (exato)")),
             h("span",{className:cls},pct+"%")
           ),
           h("div",{className:"num-tags"},s.nums.map(function(n){
             return h("span",{key:n,className:"ntag",style:{background:numBg(n)}},n);
           }))
         );
-      }),
-      h("p",{className:"tiny muted",style:{marginTop:"6px"}},"🟢 Verde=zero | 🔴 Vermelho | ⬛ Preto")
+      })
     );
+  } else {
+    dnaSection=h("div",{className:"card"},h("p",{className:"muted"},"Adicione um número na aba Jogar para ver o DNA Master."));
   }
-  var l15card=last15.length>0?h("div",{className:"card"},
-    h("div",{className:"ctitle"},"📈 ÚLTIMOS "+last15.length+" (mais antigo → mais recente)"),
-    h("div",{className:"l15chips"},
-      last15.map(function(x,i){return Chip(x.num,{k:"l"+i});}).concat(
-        h("div",{key:"next",className:"chip-col"},h("div",{className:"chip chip-next"},"?"),h("span",{className:"chip-lbl"},"próx"))
-      )
-    )
-  ):null;
-  var numBtns=[];
-  for(var n=1;n<=36;n++){
-    var info2=classify(n);
-    numBtns.push(h("button",{key:"n"+n,className:"nbtn",
-      style:{background:info2.color==="red"?"#dc2626":"#27272a",boxShadow:info2.ring?"inset 0 0 0 2px #d4af37":"none"},
-      onClick:(function(nn){return function(){addNumber(nn);};})(n)},n));
-  }
-  var inputCard=h("div",{className:"card"},
-    h("div",{className:"rowsb"},
-      h("div",{className:"ctitle",style:{marginBottom:0}},"🎲 REGISTRAR NÚMERO"),
-      h("div",{className:"ctrls"},
-        h("button",{className:"btn btn-undo",onClick:undo,disabled:!history.length},"↩ Desfazer"),
-        h("button",{className:"btn btn-reset",onClick:resetAll},"🗑 Nova Mesa")
-      )
-    ),
-    h("button",{className:"zero-btn",onClick:function(){addNumber(0);}},"0"),
-    h("div",{className:"g36"},numBtns),
-    h("p",{className:"tiny muted",style:{marginTop:"7px"}},"◻ Borda dourada = irmão de cor")
-  );
-  var learnedCard=h("div",{className:"card"},
+  var learnedSection=h("div",{className:"card"},
     h("div",{className:"ctitle"},"📊 PADRÕES APRENDIDOS"),
-    !learnedList.length?h("p",{className:"muted"},"Nenhum padrão ainda. O app aprende a cada quebra de sequência."):
+    !learnedList.length?h("p",{className:"muted"},"Nenhum padrão ainda."):
     learnedList.slice(0,6).map(function(p){
       var parts=p.key.split("|");var tok=parts[0];var len=parts[1];
       var ss=Object.entries(p.next).sort(function(a,b){return b[1]-a[1];});
@@ -360,7 +420,7 @@ function App(){
           h("span",{className:"tiny muted"},p.total+"x")
         ),
         h("div",{className:"ltags"},ss.map(function(a){
-          return h("span",{className:"tag",key:a[0]},TI[a[0]]+" "+TL[a[0]]+" ",h("b",{className:"tpct"},Math.round(a[1]/p.total*100)+"%"));
+          return h("span",{className:"tag",key:a[0]},TI[a[0]]+" ",h("b",{className:"tpct"},Math.round(a[1]/p.total*100)+"%"));
         }))
       );
     })
@@ -368,35 +428,76 @@ function App(){
   var mapCells=[];
   TABLE_ROWS.forEach(function(row){row.forEach(function(n){
     var inf=classify(n);
-    mapCells.push(h("div",{key:"m"+n,className:"mcell",style:{background:inf.color==="red"?"#dc2626":"#27272a",boxShadow:inf.ring?"inset 0 0 0 2px #d4af37":"none"}},n));
+    mapCells.push(h("div",{key:"m"+n,className:"mcell",style:{background:inf.color==="red"?"#dc2626":"#27272a",boxShadow:inf.ring?"inset 0 0 0 2px #e8c766":"none"}},n));
   });});
-  var mapCard=h("div",{className:"card"},
+  var mapSection=h("div",{className:"card"},
     h("div",{className:"toggle-row",onClick:function(){setShowTable(!showTable);}},
       h("div",{className:"ctitle",style:{marginBottom:0}},"🗺️ MAPA IRMÃOS DE COR"),
       h("span",{className:"tiny muted"},showTable?"ocultar":"mostrar")
     ),
     showTable?h("div",{className:"map-grid"},mapCells):null
   );
-  var importCard=h("div",{className:"card"},
+  var analiseTab=h("div",null,dnaSection,learnedSection,mapSection);
+  var l15section=h("div",{className:"card"},
+    h("div",{className:"ctitle"},"📈 ÚLTIMOS "+last15.length+" (antigo → recente)"),
+    last15.length===0?h("p",{className:"muted"},"Nenhum número ainda."):
+    h("div",{className:"l15chips"},last15.map(function(x,i){return Chip(x.num,{k:"l"+i});}))
+  );
+  var importSection=h("div",{className:"card"},
     h("div",{className:"ctitle"},"📥 IMPORTAR HISTÓRICO"),
-    h("div",{className:"hint"},"1. Anexe o print aqui no chat e peça ao Claude os números (esq→dir).\n2. Cole a lista abaixo e toque em Importar."),
+    h("div",{className:"hint"},"1. Anexe o print no chat e peça os números (esq→dir).\n2. Cole abaixo e toque em Importar."),
     h("textarea",{className:"itarea",placeholder:"Ex: 13 18 22 12 5 33 34 4 0 29...",value:importText,onChange:function(e){setImportText(e.target.value);}}),
     h("button",{className:"ibtn",onClick:importSeq},"⬇️ Importar e Iniciar Análise"),
     importMsg?h("p",{className:"imsg"},importMsg):null
   );
-  return h("div",{className:"app"},
-    h("div",{className:"wrap"},
-      h("div",{className:"hdr"},h("h1",null,"🎰 ROULETTE ANALYZER"),h("p",null,"R.V33.59 — MÓDULO 1 + DNA MASTER")),
-      importCard,
-      decCard,
-      runCard,
-      dnaCard,
-      l15card,
-      inputCard,
-      learnedCard,
-      mapCard,
-      h("div",{className:"footer-card"},h("p",{className:"tiny muted",style:{textAlign:"center"}},"🔧 Módulos futuros serão adicionados aqui."))
-    )
+  var historicoTab=h("div",null,l15section,importSection);
+  var presets=["start.bet.br","luck.bet.br","br4.bet.br","apostatudo.bet.br"];
+  var cassinoTab=h("div",{style:{display:"flex",flexDirection:"column",height:"100%",margin:"-12px"}},
+    h("div",{className:"cas-bar"},
+      h("input",{className:"cas-input",placeholder:"Cole o link completo da mesa",value:casinoInput,
+        onChange:function(e){setCasinoInput(e.target.value);},
+        onKeyDown:function(e){if(e.key==="Enter") loadCasino();}}),
+      h("button",{className:"cas-go",onClick:function(){loadCasino();}},"Ir")
+    ),
+    h("div",{className:"cas-presets"},presets.map(function(p){
+      return h("button",{key:p,className:"cas-preset-btn",onClick:function(){setCasinoInput(p);loadCasino(p);}},p);
+    })),
+    h("div",{className:"cas-frame-wrap"},
+      !casinoUrl?h("div",{className:"cas-empty"},
+        h("span",{style:{fontSize:"32px"}},"🎰"),
+        h("p",null,"Digite o endereço do cassino acima ou toque em um atalho."),
+        h("p",{className:"tiny"},"Alguns sites bloqueiam exibição dentro de apps — se não carregar, tente outro endereço.")
+      ):h("iframe",{
+        key:casinoUrl,
+        className:"cas-frame",
+        src:casinoUrl,
+        sandbox:"allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation",
+        allow:"geolocation; autoplay; fullscreen; clipboard-read; clipboard-write",
+        referrerPolicy:"no-referrer-when-downgrade"
+      })
+    ),
+    h("div",{className:"cas-warn"},"⚠️ Se a tela ficar em branco, o site bloqueou exibição incorporada.")
+  );
+  var content;
+  if(tab==="jogar") content=jogarTab;
+  else if(tab==="analise") content=analiseTab;
+  else if(tab==="cassino") content=cassinoTab;
+  else content=historicoTab;
+  return h("div",{className:"shell"},
+    headerEl,
+    h("div",{className:"content",style:tab==="cassino"?{padding:0,display:"flex",flexDirection:"column"}:null},content),
+    h("div",{className:"tabbar"},
+      h("button",{className:"tab"+(tab==="jogar"?" active":""),onClick:function(){setTab("jogar");}},
+        h("span",{className:"tab-icon"},"🎲"),h("span",{className:"tab-label"},"Jogar")),
+      h("button",{className:"tab"+(tab==="analise"?" active":""),onClick:function(){setTab("analise");}},
+        h("span",{className:"tab-icon"},"📊"),h("span",{className:"tab-label"},"Análise")),
+      h("button",{className:"tab"+(tab==="cassino"?" active":""),onClick:function(){setTab("cassino");}},
+        h("span",{className:"tab-icon"},"🎰"),h("span",{className:"tab-label"},"Cassino")),
+      h("button",{className:"tab"+(tab==="historico"?" active":""),onClick:function(){setTab("historico");}},
+        h("span",{className:"tab-icon"},"📜"),h("span",{className:"tab-label"},"Histórico"))
+    ),
+    overlayEl,
+    drawerEl
   );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(h(App));
